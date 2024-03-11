@@ -1,1 +1,1 @@
-worker: python3 ILovePDF/pdf.py
+worker: python3 ILovePDF/__main__.py
