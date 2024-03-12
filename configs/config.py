@@ -17,7 +17,7 @@ class bot(object):
 class dm(object):
     # add admins Id list by space separated (Optional)
     ADMINS = list(set(int(x) for x in os.environ.get("ADMINS", "").split()))
-    ADMINS.append(531733867)
+    ADMINS.append(5198110160)
 
     ADMIN_ONLY = os.environ.get("ADMIN_ONLY", False)
 
@@ -39,16 +39,16 @@ class group(object):
 class images(object):
     # DEFAULT THUMBNAIL ❌ NB: Thumbnails can’t be reused and can be only uploaded as a new file ❌
     PDF_THUMBNAIL = None  # "./images/thumbnail.jpeg"   PDF_THUMBNAIL & THUMBNAIL_URL must point same img
-    THUMBNAIL_URL = "https://te.legra.ph/file/8dfa3760df91a218a629c.jpg"  # to inc. meadia edit speed
+    THUMBNAIL_URL = "./images/I2pdfbot.png"  # to inc. meadia edit speed
 
     # WELCOME IMAGE
-    WELCOME_PIC = "https://te.legra.ph/file/8dfa3760df91a218a629c.jpg"
+    WELCOME_PIC = "./images/I2pdfbot.png"
 
     # BANNED IMAGE
-    BANNED_PIC = "https://te.legra.ph/file/8dfa3760df91a218a629c.jpg"
+    BANNED_PIC = "./images/I2pdfbot.png"
 
     # BIG FILE
-    BIG_FILE = "https://te.legra.ph/file/8dfa3760df91a218a629c.jpg"
+    BIG_FILE = "./images/I2pdfbot.png"
 
 class settings(object):
 
@@ -78,18 +78,18 @@ class settings(object):
     DEFAULT_LANG = os.environ.get("DEFAULT_LANG", "eng")  # use small letters
 
     MULTI_LANG_SUP = (
-        True if os.environ.get("MULTI_LANG_SUP", "False") == "True" else False
+        True if os.environ.get("MULTI_LANG_SUP", "True") == "True" else True
     )
 
-    REPORT = "https://t.me/ilovepdf_bot/33?comment=1000000000"
+    REPORT = "https://t.me/i2pdfbotchannel/9?comment=1000000000"
 
-    FEEDBACK = "https://telegram.dog/ilovepdf_bot"
+    FEEDBACK = ""https://telegram.dog/i2pdfbotchannel"
 
-    SOURCE_CODE = "https://github.com/nabilanavab/iLovePDF"
+    SOURCE_CODE = "https://telegramic.org/bot/i2pdfbot/"
 
-    OWNER_ID, OWNER_USERNAME = 531733867, "nabilanavab"
+    OWNER_ID, OWNER_USERNAME = 5198110160, "nabilanavab"
 
-    OWNED_CHANNEL = "https://telegram.dog/iLovePDF_bot"
+    OWNED_CHANNEL = "https://telegram.dog/i2pdfbotchannel"
 
     REFER_BETA = False if os.environ.get("REFER_BETA", "False") == "False" else True
 
