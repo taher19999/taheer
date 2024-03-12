@@ -2,7 +2,7 @@
 # Feel free to use and contribute to this project. Your contributions are welcome!
 # copyright ©️ 2021 nabilanavab
 
-file_name = "ILovePDF/plugins/dm/callBack/file_process/messagePDF.py"
+file_name = "plugins/dm/callBack/file_process/messagePDF.py"
 
 import fitz
 from logger import logger

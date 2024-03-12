@@ -2,7 +2,7 @@
 # Feel free to use and contribute to this project. Your contributions are welcome!
 # copyright ©️ 2021 nabilanavab
 
-file_name = "ILovePDF/plugins/dm/callBack/refresh.py"
+file_name = "plugins/dm/callBack/refresh.py"
 
 from plugins import *
 from ..photo import images

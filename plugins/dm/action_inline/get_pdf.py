@@ -2,7 +2,7 @@
 # Feel free to use and contribute to this project. Your contributions are welcome!
 # copyright ©️ 2021 nabilanavab
 
-file_name = "ILovePDF/plugins/dm/action_inline/get_pdf.py"
+file_name = "plugins/dm/action_inline/get_pdf.py"
 
 
 from . import *

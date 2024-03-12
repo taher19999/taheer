@@ -2,7 +2,7 @@
 # Feel free to use and contribute to this project. Your contributions are welcome!
 # copyright ©️ 2021 nabilanavab
 
-file_name = "ILovePDF/plugins/dm/start.py"
+file_name = "plugins/dm/start.py"
 
 import psutil
 from .photo import HD

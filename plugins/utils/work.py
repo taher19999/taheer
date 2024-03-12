@@ -2,7 +2,7 @@
 # Feel free to use and contribute to this project. Your contributions are welcome!
 # copyright ©️ 2021 nabilanavab
 
-file_name = "ILovePDF/plugins/utils/work.py"
+file_name = "plugins/utils/work.py"
 
 from plugins import *
 from pyrogram import enums

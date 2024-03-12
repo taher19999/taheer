@@ -2,7 +2,7 @@
 # Feel free to use and contribute to this project. Your contributions are welcome!
 # copyright ©️ 2021 nabilanavab
 
-file_name = "ILovePDF/plugins/dm/textToPdf/handler.py"
+file_name = "plugins/dm/textToPdf/handler.py"
 
 from . import *
 from plugins import *

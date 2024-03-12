@@ -2,7 +2,7 @@
 # Feel free to use and contribute to this project. Your contributions are welcome!
 # copyright ©️ 2021 nabilanavab
 
-file_name = "ILovePDF/plugins/dm/action_inline/default.py"
+file_name = "plugins/dm/action_inline/default.py"
 
 from . import *
 from plugins.utils import *

@@ -2,7 +2,7 @@
 # Feel free to use and contribute to this project. Your contributions are welcome!
 # copyright ©️ 2021 nabilanavab
 
-file_name = "ILovePDF/plugins/dm/__check__.py"
+file_name = "plugins/dm/__check__.py"
 
 from plugins import *
 from configs.db import *

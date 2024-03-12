@@ -2,7 +2,7 @@
 # Feel free to use and contribute to this project. Your contributions are welcome!
 # copyright ©️ 2021 nabilanavab
 
-file_name = "ILovePDF/plugins/dm/ban.py"
+file_name = "plugins/dm/ban.py"
 
 from plugins import *
 from configs.config import dm

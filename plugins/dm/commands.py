@@ -2,7 +2,7 @@
 # Feel free to use and contribute to this project. Your contributions are welcome!
 # copyright ©️ 2021 nabilanavab
 
-file_name = "ILovePDF/plugins/dm/commands.py"
+file_name = "plugins/dm/commands.py"
 
 from pdf import PDF
 from plugins import *

@@ -2,7 +2,7 @@
 # Feel free to use and contribute to this project. Your contributions are welcome!
 # copyright ©️ 2021 nabilanavab
 
-file_name = "ILovePDF/plugins/group/document.py"
+file_name = "plugins/group/document.py"
 
 import fitz
 from pdf import PDF
