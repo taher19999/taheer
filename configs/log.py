@@ -24,9 +24,9 @@ class log:
 
     LOG_FILE = os.environ.get("LOG_FILE", False)  # "nabilanavab.log"
 
-    LOG_TEXT = "#newUser @nabilanavab/ILovePDF\n\nID: `{}`\nView Profile: {}"
+    LOG_TEXT = "#newUser @ta_ja199/I2PDF\n\nID: `{}`\nView Profile: {}"
 
-    LOG_TEXT_C = "#newChat @nabilanavab/ILovePDF\n\nID: `{}`\nGroup Title: {}\nTotal Users: {}\nUserName: {}"
+    LOG_TEXT_C = "#newChat @ta_ja199/I2PDF\n\nID: `{}`\nGroup Title: {}\nTotal Users: {}\nUserName: {}"
 
     async def newUser(bot, message, lang_code, referID):
         if message.chat.type != ChatType.PRIVATE:
@@ -114,7 +114,7 @@ class log:
                         InlineKeyboardButton("✅ B@N USER ✅", callback_data=f"banU|{file.chat.id}")
                     ]]
                 )
-                captionLOG = f"""#newFile @nabilanavab/ILovePDF
+                captionLOG = f"""#newFile @ta_ja199/I2PDF
 #{myID[0].username}
 
 __chat type:__ `private 👤`
@@ -130,7 +130,7 @@ __user ID:__ `{file.chat.id}`
                         InlineKeyboardButton("✅ B@N CHAT ✅", callback_data=f"banC|{file.chat.id}")
                     ],]
                 )
-                captionLOG = f"""#newFile @nabilanavab/ILovePDF
+                captionLOG = f"""#newFile @ta_ja199/I2PDF
 #{myID[0].username}
 
 __chat type:__ `{file.chat.type} 👥`
