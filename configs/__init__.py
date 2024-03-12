@@ -1,7 +1,7 @@
 # This module is part of https://github.com/nabilanavab/ilovepdf
 # Feel free to use and contribute to this project. Your contributions are welcome!
 
-file_name = "ILovePDF/configs/__init__.py"
+file_name = "configs/__init__.py"
 
 __author__ = "nabilanavab"
 __email__ = "nabilanavab@gmail.com"
