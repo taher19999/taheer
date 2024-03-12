@@ -18,7 +18,7 @@ async def askPartPdf(bot, callbackQuery, question, limit: int = None):
             reply_to_message_id=callbackQuery.message.id,
             text=question,
             filters=filters.text,
-            reply_markup=ForceReply(True, "Enter Split PDF data.."),
+            reply_markup=ForceReply(True, "أدخل بيانات تقسيم PDF.."),
         )
         if splitData.text.startswith(":"):
             pgData = splitData.text.split(":")[1]
