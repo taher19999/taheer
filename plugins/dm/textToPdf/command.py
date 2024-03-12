@@ -20,7 +20,7 @@ async def text2PDF(bot, message):
             lang_code=lang_code,
         )
         await message.reply_photo(
-            photo="https://graph.org/file/3218aa8e08eb10e216552.jpg",
+            photo="https://telegra.ph/engtaheree-01-12",
             caption=tTXT,
             reply_markup=tBTN,
         )
