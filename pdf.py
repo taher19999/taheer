@@ -2,7 +2,7 @@
 # Feel free to use and contribute to this project. Your contributions are welcome!
 # copyright ©️ 2021 nabilanavab
 
-file_name = "ILovePDF/pdf.py"
+file_name = "pdf.py"
 
 from configs.config import bot
 from telebot import async_telebot
