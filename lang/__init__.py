@@ -2,7 +2,7 @@
 # Feel free to use and contribute to this project. Your contributions are welcome!
 # copyright ©️ 2021 nabilanavab
 
-file_name = "ILovePDF/lang/__init__.py"
+file_name = "lang/__init__.py"
 
 from configs.config import settings
 
