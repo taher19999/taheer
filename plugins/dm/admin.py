@@ -29,10 +29,10 @@ async def stop(bot, message):
         # response to admins
         if (message and message.text=="/stop" and BROADCAST):
             return await message.reply(
-                "MESSAGE FOR ADMIN: Currently Broadsting Something.. 🥱", quote=True
+                "رسالة للمسؤول: يتم حاليًا نشر شيء ما.. 🥱", quote=True
             )
         settings.STOP_BOT = not settings.STOP_BOT
-        reply = "MESSAGE FOR ADMIN: `bot stoped..` 🗽" if settings.STOP_BOT else "MESSAGE FOR ADMIN: `bot started..` ✨"
+        reply = "MESSAGE FOR ADMIN: `توقف الروبوت..` 🗽" if settings.STOP_BOT else "MESSAGE FOR ADMIN: `bot started..` ✨"
         await message.reply(reply)
 
         # when the bot get started it notifies the users asked to notify
@@ -62,21 +62,21 @@ async def send(bot, message):
         await message.reply_chat_action(enums.ChatAction.TYPING)
         
         if not message.reply_to_message:
-            error = await message.reply("⚙️ `Processing..`", quote=True)
+            error = await message.reply("⚙️ `المعالجة..`", quote=True)
             await asyncio.sleep(1)
             return await error.edit("__please, reply to a message__ 🥲")
 
-        msg = await message.reply_to_message.reply("⚙️ `Processing..`", quote=True)
+        msg = await message.reply_to_message.reply("⚙️ `المعالجة..`", quote=True)
         await message.delete()
         
         return await msg.edit(
-            text="⚙️ SEND MESSAGE: \n\n`Now, Select any Option Below.. `",
+            text="⚙️ إرسال رسالة: \n\n`الآن، حدد أي خيار أدناه.. `",
             reply_markup=InlineKeyboardMarkup(
                 [[
-                    InlineKeyboardButton("📢 ↓ BROADCAST ↓ 📢", callback_data="nabilanavab")
+                    InlineKeyboardButton("📢 ↓ بث ↓ 📢", callback_data="nabilanavab")
                 ],[
-                    InlineKeyboardButton("🔸 COPY 🔸", callback_data="send|copy|broad"),
-                    InlineKeyboardButton("🔸 FORWARD 🔸", callback_data="send|forw|broad"),
+                    InlineKeyboardButton("🔸 نسخ 🔸", callback_data="send|copy|broad"),
+                    InlineKeyboardButton("🔸 توجية 🔸", callback_data="send|forw|broad"),
                 ],[
                     InlineKeyboardButton("👤 ↓ PM ↓ 👤", callback_data="nabilanavab"),
                 ],[
