@@ -2,7 +2,7 @@
 # Feel free to use and contribute to this project. Your contributions are welcome!
 # copyright ©️ 2021 nabilanavab
 
-file_name = "ILovePDF/lang/__users__.py"
+file_name = "lang/__users__.py"
 
 # Default User Lang Data:
 
