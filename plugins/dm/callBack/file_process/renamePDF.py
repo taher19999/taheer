@@ -17,7 +17,7 @@ async def askName(bot, callbackQuery, question):
             reply_to_message_id=callbackQuery.message.id,
             text=question,
             filters=filters.text,
-            reply_markup=ForceReply(True, "Enter new File Name.."),
+            reply_markup=ForceReply(True, "أدخل اسم الملف الجديد.."),
         )
         return (True, newName) if newName.text != "/exit" else (False, newName)
     except Exception as Error:
