@@ -100,7 +100,6 @@ async def start(bot, message):
                             text=tTXT[0], switch_inline_query_current_chat=""
                         )
                     ],
-                    [InlineKeyboardButton(text=tTXT[1], callback_data="beta")],
                 ]
             ),
         )
