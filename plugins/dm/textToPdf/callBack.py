@@ -23,7 +23,7 @@ async def text_to_pdf_cb(bot, callbackQuery):
                     text="pdf2TXT['size_btn']", lang_code=lang_code
                 )
                 tTXT = await util.createBUTTON(tTXT, "121")
-                media = "https://graph.org/file/3218aa8e08eb10e216552.jpg"
+                media = "https://telegra.ph/engtaheree-01-12"
             if len(callbackQuery.data.split("|")) == 2:
                 tTXT, _ = await util.translate(
                     text="pdf2TXT['fifteen']", lang_code=lang_code
@@ -35,7 +35,7 @@ async def text_to_pdf_cb(bot, callbackQuery):
                     inDir=tTXT, value=f"{callbackQuery.data}", front=front
                 )
                 tTXT = await util.createBUTTON(tTXT, "15551")
-                media = "https://graph.org/file/83c1f58d4c36b62aa92f3.jpg"
+                media = "https://graph.org/FONT-07-19-2"
             elif len(callbackQuery.data.split("|")) == 3:
                 tTXT, _ = await util.translate(
                     text="pdf2TXT['fifteen']", lang_code=lang_code
@@ -47,7 +47,7 @@ async def text_to_pdf_cb(bot, callbackQuery):
                     inDir=tTXT, value=f"{callbackQuery.data}", front=front
                 )
                 tTXT = await util.createBUTTON(tTXT, "15551")
-                media = "https://graph.org/file/83c1f58d4c36b62aa92f3.jpg"
+                media = "https://graph.org/FONT-07-19-2"
             elif len(callbackQuery.data.split("|")) == 4:
                 tTXT, _ = await util.translate(
                     text="pdf2TXT['six']", lang_code=lang_code
@@ -59,7 +59,7 @@ async def text_to_pdf_cb(bot, callbackQuery):
                     inDir=tTXT, value=f"{callbackQuery.data}", front=front
                 )
                 tTXT = await util.createBUTTON(tTXT, "1331")
-                media = "https://graph.org/file/055bc5df94dc7859f59fd.jpg"
+                media = "https://graph.org/CHOSSE-07-19"
             elif len(callbackQuery.data.split("|")) == 5:
                 tTXT, _ = await util.translate(
                     text="pdf2TXT['six_']", lang_code=lang_code
