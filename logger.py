@@ -2,7 +2,7 @@
 # Feel free to use and contribute to this project. Your contributions are welcome!
 # copyright ©️ 2021 nabilanavab
 
-file_name = "ILovePDF/logger.py"
+file_name = "logger.py"
 
 import logging
 logger = logging.getLogger(__name__)
