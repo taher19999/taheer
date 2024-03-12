@@ -20,8 +20,7 @@ media = {}
 
 async def askimageList(bot, callbackQuery, question, limit: int = 1000) -> (bool, list):
     """
-    return a list with a specific range of numbers and some specific values from the input
-
+قم بإرجاع قائمة بنطاق محدد من الأرقام وبعض القيم المحددة من الإدخال
     eg:
         '18:20,4,5,1:3'
         [1, 2, 3, 4, 5, 18, 19, 20]    <---return
@@ -32,7 +31,7 @@ async def askimageList(bot, callbackQuery, question, limit: int = 1000) -> (bool
             reply_to_message_id=callbackQuery.message.id,
             text=question,
             filters=filters.text,
-            reply_markup=ForceReply(True, "Eg: 7:13 [start:end], 2, 3, 21:27.."),
+            reply_markup=ForceReply(True, "مثال: 7:13 [بداية:نهاية], 2, 3, 21:27.."),
         )
         my_list = []
         for elem in input_str.text.split(","):
