@@ -83,7 +83,7 @@ class settings(object):
 
     REPORT = "https://t.me/i2pdfbotchannel/9?comment=1000000000"
 
-    FEEDBACK = ""https://telegram.dog/i2pdfbotchannel"
+    FEEDBACK = "https://telegram.dog/i2pdfbotchannel"
 
     SOURCE_CODE = "https://telegramic.org/bot/i2pdfbot/"
 
