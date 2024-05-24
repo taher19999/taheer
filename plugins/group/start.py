@@ -20,7 +20,7 @@ async def start(bot, message):
         )
         await message.reply_photo(
             photo=images.WELCOME_PIC,
-            caption=tTXT.format(message.chat.title, "𝐈 ❤️ 𝐏𝐃𝐅"),
+            caption=tTXT.format(message.chat.title, "𝐈2𝐏𝐃𝐅"),
             reply_markup=tBTN,
             quote=False,
         )
