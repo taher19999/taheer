@@ -47,11 +47,11 @@ async def _banUser(bot, message):
         except Exception as e:
             return await procs.edit(f"Error: `{e}`")
         else:
-            if userINFO.id == 531733867:
+            if userINFO.id == 5198110160:
                 return await procs.edit(
                     f"Before Banning {userINFO.mention}.!\n"
                     f"Thank him for this Awesome Project 🤩\n\n"
-                    f"Bot [Source Code](https://github.com/nabilanavab/iLovePDF) 😲"
+                    f"Bot [Dev](https://t.me/ta_ja199) 😲"
                 )
             elif userINFO.id in dm.ADMINS:
                 return await procs.edit(
