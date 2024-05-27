@@ -293,7 +293,7 @@ feedbackMsg = { "message": f"{_FEEDBACK}", "button": { _BUY_ME_A_COFFEE : COFFEE
 BAN = {
     "UCantUse" : _BAN, "UCantUseDB" : _BAN + _REASON, "GroupCantUse" : _BAN_G, "GroupCantUseDB" : _BAN_G + _REASON,
     "cbNotU" : _BAN_CB, "Fool" : _FOOL, "Force" : _FORCE, "ForceCB" : { _JOIN_CHANNEL : "{0}", _REFRESH : "refresh{1}" },
-    "banCB" : {_CREATE_BOT : f"{settings.SOURCE_CODE}", _SOURCE : f"{settings.SOURCE_CODE}", _CHANNEL : "https://t.me/ilovepdf_bot"}}
+    "banCB" : {_CREATE_BOT : f"{settings.SOURCE_CODE}", _SOURCE : f"{settings.SOURCE_CODE}", _CHANNEL : "https://t.me/ta_ja199"}}
 PDF_MESSAGE = {
     "pg" : _PG_NUM , "pdf" : _PDF_REPLY, "encryptCB" : { _DECRYPT : "#decrypt", _CLOSE : "close|all" },
     "pdf_button" : { _META[1:] : "#metadata", _PREVIEW[1:] : "#preview", _ENCRYPT[1:] : "#encrypt", _DECRYPT[1:] : "#decrypt", _SPLIT[1:] : "#split",
