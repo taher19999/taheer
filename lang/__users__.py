@@ -10,6 +10,6 @@ file_name = "lang/__users__.py"
 # Syntax := UserID: langCode
 
 userLang = {
-  # 531733867: "eng",
+  # 5198110160: "eng",
   # 5161864280: "mal"
 }
