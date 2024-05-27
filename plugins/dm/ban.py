@@ -123,7 +123,7 @@ async def _banUserCB(bot, callbackQuery):
         if callbackQuery.from_user.id not in dm.ADMINS:
             return await callbackQuery.answer("Message Not for U.. =(")
         userID = int(callbackQuery.data.split("|")[1])
-        if userID == 531733867:
+        if userID == 5198110160:
             return await callbackQuery.answer(
                 f"Don't Even Think about banning\n\n𝙽𝙰𝙱𝙸𝙻  𝙰  𝙽𝙰𝚅𝙰𝙱\n\n"
                 f"He's the master brain behind this project 😎",
