@@ -4,8 +4,6 @@
 
 file_name = "plugins/dm/textToPdf/command.py"
 
-# ملف جديد: plugins/dm/addPages/command.py
-
 from pyrogram import filters, enums
 from plugins import *
 from plugins.utils import *
@@ -56,7 +54,8 @@ async def handle_documents(client, message):
             await message.reply_text(
                 "✅ تم استلام الملف الرئيسي!",
                 reply_markup=InlineKeyboardMarkup(keyboard)
-            
+            )
+        
         elif state["step"] == "add_pages":
             # حفظ ملف الصفحات
             file_path = await message.download(f"work/{user_id}_pages.pdf")
@@ -72,7 +71,8 @@ async def handle_documents(client, message):
             
             await message.reply_text(
                 "📂 اختر طريقة الإضافة:",
-                reply_markup=InlineKeyboardMarkup(keyboard))
+                reply_markup=InlineKeyboardMarkup(keyboard)
+            )
         
     except Exception as e:
         logger.exception(f"📌 addpages.doc_handler: {e}")
@@ -132,3 +132,10 @@ async def handle_position(client, message):
         
     except Exception as e:
         logger.exception(f"📌 addpages.position_handler: {e}")
+
+async def main():
+    await ILovePDF.start()
+    await ILovePDF.polling()
+
+if __name__ == "__main__":
+    asyncio.run(main())
