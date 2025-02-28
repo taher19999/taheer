@@ -21,6 +21,14 @@ _THUMB = "THUMBNAIL"
 _NAME = "NAME"
 _API = "API"
 _CAPTION = "CAPTION"
+SEND_MAIN_PDF = "📤 أرسل الملف الرئيسي الآن."
+MAIN_PDF_RECEIVED = "✅ تم استلام الملف الرئيسي! اضغط 'إضافة صفحة' للمتابعة."
+PDF_ONLY = "❌ يُسمح فقط بملفات PDF."
+CHOOSE_OPTION = "📂 اختر طريقة الإضافة:"
+SEND_PAGES = "📤 أرسل ملف الصفحات الآن."
+SEND_POSITION = "🔢 أدخل الموضع (مثال: 3):"
+INTEGER_ONLY = "❌ يُرجى إدخال رقم صحيح."
+SUCCESS_MESSAGE = "✅ تم تعديل الملف بنجاح!"
 _BACK_HOME = "« BACK TO HOME «"
 _INSTRUCTIONS = "🛈 INSTRUCTIONS 🛈"
 _HOME_A = "Hey {}..!!\nWelcome to {}.!\n\nWith this tool, you can easily convert images to PDF, compress PDF files, split , merge, encrypt or decrypt PDFs, rotate PDF pages, and much more.\n\nSimply send me a PDF/IMAGE and I will perform the requested actions. For help select '⚠️ HELP ⚠️' at any time. The PDF bot is here to make your life easier..\n\nTry it out now and see how it can help you with all of your PDF needs!"
