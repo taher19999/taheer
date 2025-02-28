@@ -13,7 +13,7 @@ from telegram.ext import (
 )
 from PyPDF2 import PdfReader, PdfWriter
 
-TOKEN = os.environ.get("API_TOKEN")
+TOKEN = os.environ.get("BOT_TOKEN")
 MAIN_PDF, PAGE_PDF, CHOOSE_OPTION, POSITION = range(4)
 USER_DATA = {}
 
