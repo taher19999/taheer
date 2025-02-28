@@ -69,6 +69,13 @@ _CODEC = "__ لا يمكنني فعل أي شيء بهذا الملف .__ 😏\n
 _CODEC_CB = "❌ خطأ في برنامج الترميز ❌"
 _ENCRYTED_FILE = " تم تشفير الملف  🔐\n\n اسم الملف: `{}`\n حجم الملف: `{}`"
 SEND_MAIN_PDF = "📤 Please send the main PDF file."
+MAIN_PDF_RECEIVED = "✅ Main PDF received! Click 'Add Pages' to proceed."
+PDF_ONLY = "❌ Only PDF files are allowed."
+CHOOSE_OPTION = "📂 Choose how to add pages:"
+SEND_PAGES = "📤 Send the pages file now."
+SEND_POSITION = "🔢 Enter the position (e.g., 3):"
+INTEGER_ONLY = "❌ Please enter a valid integer."
+SUCCESS_MESSAGE = "✅ File modified successfully!"
 _DECRYPT = "فك-التشفير🔓"
 _ENCRYPT = "🔐تشفير🔐"
 _REASON = "n\n السبب: {}"
