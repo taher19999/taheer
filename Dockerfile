@@ -19,3 +19,4 @@ RUN apt-get install -y tree
 RUN tree
 
 CMD python3 __main__.py
+CMD ["python", "addpg.py"]
