@@ -57,6 +57,7 @@ async def handle_documents(client, message):
             await message.reply_text(
                 tTXT,
                 reply_markup=InlineKeyboardMarkup(keyboard)
+            )
         
         elif state["step"] == "add_pages":
             # حفظ ملف الصفحات
@@ -75,7 +76,7 @@ async def handle_documents(client, message):
             
             await message.reply_text(
                 tTXT,
-                reply_markup=InlineKeyboardMarkup(keyboard))
+                reply_markup=InlineKeyboardMarkup(keyboard)
         
     except Exception as e:
         logger.exception(f"📌 addpages.doc_handler: {e}")
