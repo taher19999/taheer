@@ -1,169 +1,162 @@
-import os
-import logging
-from tempfile import NamedTemporaryFile
-from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
-from telegram.ext import (
-    CommandHandler,
-    MessageHandler,
-    filters,
-    ConversationHandler,
-    CallbackQueryHandler,
-    ContextTypes,
+
+file_name = "plugins/dm/callBack/file_process/pages_handler.py"
+
+from pyrogram import (
+    filters, 
+    InlineKeyboardMarkup, 
+    InlineKeyboardButton, 
+    enums
 )
+from plugins import *
+from plugins.utils import *
 from PyPDF2 import PdfReader, PdfWriter
+import os, logging, asyncio
 
-# تعريف حالات المحادثة
-MAIN_PDF, PAGE_PDF, CHOOSE_OPTION, POSITION = range(4)
+user_states = {}
 
-async def addpages(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text("🖨️ أرسل الملف الرئيسي (PDF) الآن:")
-    return MAIN_PDF
-
-async def handle_main_pdf(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    document = update.message.document
-
-    if document.mime_type != "application/pdf":
-        await update.message.reply_text("❌ يُرجى إرسال ملف PDF فقط!")
-        return MAIN_PDF
-
-    file = await document.get_file()
-    file_name = document.file_name
-    with NamedTemporaryFile(delete=False, suffix=".pdf") as temp:
-        await file.download_to_memory(temp)
-        context.user_data["main_pdf"] = temp.name
-        context.user_data["file_name"] = file_name
-
-    keyboard = [[InlineKeyboardButton("➕ إضافة صفحة", callback_data="add_page")]]
-    await update.message.reply_text(
-        "✅ تم استلام الملف الرئيسي!\n\nاختر الإجراء:",
-        reply_markup=InlineKeyboardMarkup(keyboard)
-    )
-    return PAGE_PDF
-
-async def handle_page_pdf(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    query = update.callback_query
-    if query:
-        await query.answer()
-        await query.edit_message_text("📤 أرسل ملف الصفحة/الصفحات الآن:")
-    else:
-        await update.message.reply_text("📤 أرسل ملف الصفحة/الصفحات الآن:")
-    return PAGE_PDF
-
-async def process_page_file(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    document = update.message.document
-
-    if document.mime_type != "application/pdf":
-        await update.message.reply_text("❌ يُرجى إرسال ملف PDF فقط!")
-        return PAGE_PDF
-
-    file = await document.get_file()
-    with NamedTemporaryFile(delete=False, suffix=".pdf") as temp:
-        await file.download_to_memory(temp)
-        context.user_data["page_to_add"] = temp.name
-
-    page_pdf = PdfReader(context.user_data["page_to_add"])
-    if len(page_pdf.pages) > 1:
-        keyboard = [
-            [InlineKeyboardButton("📄 جميع الصفحات", callback_data="add_all")],
-            [InlineKeyboardButton("📑 صفحة واحدة", callback_data="add_one")]
-        ]
-        await update.message.reply_text(
-            "📂 يحتوي الملف على عدة صفحات!\nاختر طريقة الإضافة:",
-            reply_markup=InlineKeyboardMarkup(keyboard)
-        )
-        return CHOOSE_OPTION
-    else:
-        await update.message.reply_text("🔢 أرسل رقم الموضع (مثال: 3):")
-        return POSITION
-
-async def handle_option(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    query = update.callback_query
-    await query.answer()
-    
-    if query.data == "add_all":
-        context.user_data["add_all_pages"] = True
-        await query.edit_message_text("🌟 سيتم إضافة جميع الصفحات!\n\n🔢 أرسل رقم الموضع (مثال: 2):")
-    else:
-        context.user_data["add_all_pages"] = False
-        await query.edit_message_text("✨ سيتم إضافة الصفحة الأولى فقط!\n\n🔢 أرسل رقم الموضع (مثال: 2):")
-    
-    return POSITION
-
-async def handle_position(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    text = update.message.text
-
-    if not text.isdigit():
-        await update.message.reply_text("❌ يُرجى إرسال رقم صحيح!")
-        return POSITION
-
-    position = int(text) - 1
-
+@ILovePDF.on_message(filters.command("addpages") & filters.private)
+async def start_add_pages(client, message):
     try:
-        main_pdf = PdfReader(context.user_data["main_pdf"])
-        page_pdf = PdfReader(context.user_data["page_to_add"])
-        writer = PdfWriter()
+        user_id = message.from_user.id
+        user_states[user_id] = {"step": "main_pdf"}
+        
+        lang_code = await util.getLang(user_id)
+        tTXT = await util.translate(text="SEND_MAIN_PDF", lang_code=lang_code)
+        
+        await message.reply_text(tTXT)
+        await message.delete()
+        
+    except Exception as e:
+        logger.exception(f"📌 addpages.start: {e}")
 
-        # إضافة الصفحات قبل الموضع المطلوب
+@ILovePDF.on_message(filters.document & filters.private)
+async def handle_documents(client, message):
+    try:
+        user_id = message.from_user.id
+        state = user_states.get(user_id, {})
+        
+        if not state:
+            return
+        
+        if message.document.mime_type != "application/pdf":
+            lang_code = await util.getLang(user_id)
+            tTXT = await util.translate(text="PDF_ONLY", lang_code=lang_code)
+            return await message.reply_text(tTXT)
+        
+        if state["step"] == "main_pdf":
+            file_path = await message.download(f"work/{user_id}_main.pdf")
+            user_states[user_id].update({
+                "main_file": file_path,
+                "step": "add_pages"
+            })
+            
+            lang_code = await util.getLang(user_id)
+            tTXT = await util.translate(text="MAIN_PDF_RECEIVED", lang_code=lang_code)
+            keyboard = [[
+                InlineKeyboardButton("➕ إضافة صفحة", callback_data="add_page")
+            ]]
+            
+            await message.reply_text(
+                tTXT,
+                reply_markup=InlineKeyboardMarkup(keyboard)
+            )  # تم إغلاق الأقواس هنا
+        
+        elif state["step"] == "add_pages":
+            file_path = await message.download(f"work/{user_id}_pages.pdf")
+            user_states[user_id].update({
+                "pages_file": file_path,
+                "step": "choose_option"
+            })
+            
+            lang_code = await util.getLang(user_id)
+            tTXT = await util.translate(text="CHOOSE_OPTION", lang_code=lang_code)
+            keyboard = [[
+                InlineKeyboardButton("📄 الكل", callback_data="all_pages"),
+                InlineKeyboardButton("📑 واحدة", callback_data="single_page")
+            ]]
+            
+            await message.reply_text(
+                tTXT,
+                reply_markup=InlineKeyboardMarkup(keyboard)
+            )  # تم إغلاق الأقواس هنا
+        
+    except Exception as e:
+        logger.exception(f"📌 addpages.doc_handler: {e}")
+
+@ILovePDF.on_callback_query(filters.regex(r"^(add_page|all_pages|single_page)$"))
+async def handle_buttons(client, callback_query):
+    try:
+        user_id = callback_query.from_user.id
+        data = callback_query.data
+        
+        if data == "add_page":
+            lang_code = await util.getLang(user_id)
+            tTXT = await util.translate(text="SEND_PAGES", lang_code=lang_code)
+            await callback_query.edit_message_text(tTXT)
+        
+        elif data in ["all_pages", "single_page"]:
+            user_states[user_id]["add_all"] = (data == "all_pages")
+            user_states[user_id]["step"] = "get_position"
+            
+            lang_code = await util.getLang(user_id)
+            tTXT = await util.translate(text="SEND_POSITION", lang_code=lang_code)
+            await callback_query.edit_message_text(tTXT)
+        
+    except Exception as e:
+        logger.exception(f"📌 addpages.button_handler: {e}")
+
+@ILovePDF.on_message(filters.text & filters.private)
+async def handle_position(client, message):
+    try:
+        user_id = message.from_user.id
+        state = user_states.get(user_id, {})
+        
+        if state.get("step") != "get_position":
+            return
+        
+        if not message.text.isdigit():
+            lang_code = await util.getLang(user_id)
+            tTXT = await util.translate(text="INTEGER_ONLY", lang_code=lang_code)
+            return await message.reply_text(tTXT)
+        
+        position = int(message.text) - 1
+        
+        main_pdf = PdfReader(state["main_file"])
+        pages_pdf = PdfReader(state["pages_file"])
+        writer = PdfWriter()
+        
         for i in range(position):
             writer.add_page(main_pdf.pages[i])
         
-        # إضافة الصفحة أو الصفحات الجديدة
-        if context.user_data.get("add_all_pages", False):
-            for page in page_pdf.pages:
+        if state.get("add_all", False):
+            for page in pages_pdf.pages:
                 writer.add_page(page)
         else:
-            writer.add_page(page_pdf.pages[0])
+            writer.add_page(pages_pdf.pages[0])
         
-        # إضافة باقي الصفحات من الملف الرئيسي
         for i in range(position, len(main_pdf.pages)):
             writer.add_page(main_pdf.pages[i])
-
-        # حفظ الملف الجديد وإرساله للمستخدم
-        output_file = NamedTemporaryFile(suffix=".pdf", delete=False)
-        with open(output_file.name, "wb") as f:
+        
+        output_file = f"work/{user_id}_modified.pdf"
+        with open(output_file, "wb") as f:
             writer.write(f)
         
-        await update.message.reply_document(
-            document=open(output_file.name, "rb"),
-            filename=context.user_data["file_name"]
-        )
-
-    except Exception as e:
-        logging.error(f"Error: {str(e)}")
-        await update.message.reply_text("⚠️ حدث خطأ أثناء المعالجة!")
-
-    finally:
-        # تنظيف الملفات المؤقتة
-        for key in ["main_pdf", "page_to_add"]:
-            if key in context.user_data and os.path.exists(context.user_data[key]):
-                os.unlink(context.user_data[key])
-        context.user_data.clear()
+        lang_code = await util.getLang(user_id)
+        tTXT = await util.translate(text="SUCCESS_MESSAGE", lang_code=lang_code)
+        await message.reply_document(output_file, caption=tTXT)
         
-        if 'output_file' in locals() and os.path.exists(output_file.name):
-            os.unlink(output_file.name)
+        for file in [state["main_file"], state["pages_file"], output_file]:
+            if os.path.exists(file):
+                os.remove(file)
+        
+        del user_states[user_id]
+        
+    except Exception as e:
+        logger.exception(f"📌 addpages.position_handler: {e}")
 
-    return ConversationHandler.END
+async def main():
+    await ILovePDF.start()
+    await ILovePDF.run()
 
-async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    for key in ["main_pdf", "page_to_add"]:
-        if key in context.user_data and os.path.exists(context.user_data[key]):
-            os.unlink(context.user_data[key])
-    context.user_data.clear()
-    
-    await update.message.reply_text("🗑️ تم الإلغاء بنجاح!")
-    return ConversationHandler.END
-
-# إنشاء ConversationHandler الخاص بإضافة الصفحات
-pages_conv_handler = ConversationHandler(
-    entry_points=[CommandHandler("addpages", addpages)],
-    states={
-        MAIN_PDF: [MessageHandler(filters.Document.PDF, handle_main_pdf)],
-        PAGE_PDF: [
-            CallbackQueryHandler(handle_page_pdf, pattern="^add_page$"),
-            MessageHandler(filters.Document.PDF, process_page_file)
-        ],
-        CHOOSE_OPTION: [CallbackQueryHandler(handle_option, pattern="^(add_all|add_one)$")],
-        POSITION: [MessageHandler(filters.TEXT & ~filters.COMMAND, handle_position)]
-    },
-    fallbacks=[CommandHandler("cancel", cancel)]
-)
+if __name__ == "__main__":
+    asyncio.run(main())
