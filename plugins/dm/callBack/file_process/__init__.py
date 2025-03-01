@@ -47,6 +47,7 @@ __all__ = [
     "twoPagesToOneH",
     "watermarkPDF",
     "deletePDFPg",
+    "addpages",
     "zipTarPDF",
     "messagePDF",
     "metadataPDF",
