@@ -315,7 +315,10 @@ async def __index__(bot, callbackQuery):
             isSuccess, output_file = await deletePDFPg.deletePDFPg(
                 cDIR=cDIR, input_file=input_file, imageList=imageList
             )
-
+        elif data == "addpg":
+            isSuccess, output_file = await addpages.addpages(
+                cDIR=cDIR, input_file=input_file, imageList=imageList
+            )
         elif data == "merge":
             isSuccess, output_file = await mergePDF.mergePDF(
                 cDIR=cDIR,
