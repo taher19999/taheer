@@ -1,172 +1,51 @@
-file_name = "plugins/dm/callBack/file_process/addpages.py"
+# This module is part of https://github.com/nabilanavab/ilovepdf
+# Feel free to use and contribute to this project. Your contributions are welcome!
+# copyright © 2021 nabilanavab
 
-import os
-import logging
-from tempfile import NamedTemporaryFile
-from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
-from telegram.ext import (
-    Application,
-    CommandHandler,
-    MessageHandler,
-    filters,
-    ContextTypes,
-    ConversationHandler,
-    CallbackQueryHandler,
-)
-from PyPDF2 import PdfReader, PdfWriter
+file_name = "plugins/dm/callBack/file_process/addPDFPg.py"
 
-# تحديد مراحل المحادثة
-MAIN_PDF, PAGE_PDF, CHOOSE_OPTION, POSITION = range(4)
+import fitz  # PyMuPDF
+from logger import logger
 
-async def addpages(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text("🖨️ أرسل الملف الرئيسي (PDF) الآن:")
-    return MAIN_PDF
+async def addPDFPg(main_pdf: str, page_pdf: str, position: int, add_all_pages: bool) -> (bool, str):
+    """
+    Insert pages from one PDF into another at a specific position.
 
-async def handle_main_pdf(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    document = update.message.document
-    if document.mime_type != "application/pdf":
-        await update.message.reply_text("❌ يُرجى إرسال ملف PDF فقط!")
-        return MAIN_PDF
+    Parameters:
+        main_pdf      : Path to the main PDF file where pages will be inserted.
+        page_pdf      : Path to the PDF file containing the pages to be added.
+        position      : The position (1-based index) where pages should be inserted.
+        add_all_pages : If True, insert all pages from `page_pdf`, otherwise insert only the first page.
 
-    file = await document.get_file()
-    file_name = document.file_name
-    with NamedTemporaryFile(delete=False, suffix=".pdf") as temp:
-        await file.download_to_memory(temp)
-        # حفظ بيانات الملف في context.user_data
-        context.user_data["main_pdf"] = temp.name
-        context.user_data["file_name"] = file_name
-
-    keyboard = [[InlineKeyboardButton("➕ إضافة صفحة", callback_data="add_page")]]
-    await update.message.reply_text(
-        "✅ تم استلام الملف الرئيسي!\n\nاختر الإجراء:",
-        reply_markup=InlineKeyboardMarkup(keyboard)
-    )
-    return PAGE_PDF
-
-async def handle_page_pdf(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    query = update.callback_query
-    if query:
-        await query.answer()
-        await query.edit_message_text("📤 أرسل ملف الصفحة/الصفحات الآن:")
-    else:
-        await update.message.reply_text("📤 أرسل ملف الصفحة/الصفحات الآن:")
-    return PAGE_PDF
-
-async def process_page_file(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    document = update.message.document
-    if document.mime_type != "application/pdf":
-        await update.message.reply_text("❌ يُرجى إرسال ملف PDF فقط!")
-        return PAGE_PDF
-
-    file = await document.get_file()
-    with NamedTemporaryFile(delete=False, suffix=".pdf") as temp:
-        await file.download_to_memory(temp)
-        context.user_data["page_to_add"] = temp.name
-
-    page_pdf = PdfReader(context.user_data["page_to_add"])
-    if len(page_pdf.pages) > 1:
-        keyboard = [
-            [InlineKeyboardButton("📄 جميع الصفحات", callback_data="add_all")],
-            [InlineKeyboardButton("📑 صفحة واحدة", callback_data="add_one")]
-        ]
-        await update.message.reply_text(
-            "📂 يحتوي الملف على عدة صفحات!\nاختر طريقة الإضافة:",
-            reply_markup=InlineKeyboardMarkup(keyboard)
-        )
-        return CHOOSE_OPTION
-    else:
-        await update.message.reply_text("🔢 أرسل رقم الموضع (مثال: 3):")
-        return POSITION
-
-async def handle_option(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    query = update.callback_query
-    await query.answer()
-    
-    if query.data == "add_all":
-        context.user_data["add_all_pages"] = True
-        await query.edit_message_text("🌟 سيتم إضافة جميع الصفحات!\n\n🔢 أرسل رقم الموضع (مثال: 2):")
-    else:
-        context.user_data["add_all_pages"] = False
-        await query.edit_message_text("✨ سيتم إضافة الصفحة الأولى فقط!\n\n🔢 أرسل رقم الموضع (مثال: 2):")
-    
-    return POSITION
-
-async def handle_position(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    text = update.message.text
-    if not text.isdigit():
-        await update.message.reply_text("❌ يُرجى إرسال رقم صحيح!")
-        return POSITION
-
-    position = int(text) - 1
-
+    Returns:
+        bool         : Returns True if the operation is successful.
+        output_path  : The path to the modified PDF file or an error message in case of failure.
+    """
     try:
-        main_pdf = PdfReader(context.user_data["main_pdf"])
-        page_pdf = PdfReader(context.user_data["page_to_add"])
-        writer = PdfWriter()
+        output_path = f"{main_pdf}_modified.pdf"  # تحديد اسم ملف الإخراج
 
-        # إضافة الصفحات قبل الموضع
-        for i in range(position):
-            writer.add_page(main_pdf.pages[i])
-        
-        # إضافة الصفحات الجديدة
-        if context.user_data.get("add_all_pages", False):
-            for page in page_pdf.pages:
-                writer.add_page(page)
+        # فتح الملفات
+        main_doc = fitz.open(main_pdf)
+        page_doc = fitz.open(page_pdf)
+
+        # التحقق من صحة الموضع
+        if position < 1 or position > len(main_doc) + 1:
+            return False, "Invalid position!"
+
+        # إدراج الصفحات الجديدة في الموضع المحدد
+        if add_all_pages:
+            for i in range(len(page_doc)):
+                main_doc.insert_pdf(page_doc, from_page=i, to_page=i, start_at=position - 1 + i)
         else:
-            writer.add_page(page_pdf.pages[0])
-        
-        # إضافة الصفحات المتبقية
-        for i in range(position, len(main_pdf.pages)):
-            writer.add_page(main_pdf.pages[i])
+            main_doc.insert_pdf(page_doc, from_page=0, to_page=0, start_at=position - 1)
 
-        # حفظ الملف وإرساله للمستخدم
-        output_file = NamedTemporaryFile(suffix=".pdf", delete=False)
-        with open(output_file.name, "wb") as f:
-            writer.write(f)
-        
-        await update.message.reply_document(
-            document=open(output_file.name, "rb"),
-            filename=context.user_data["file_name"]
-        )
+        # حفظ الملف المعدل
+        main_doc.save(output_path)
+        main_doc.close()
+        page_doc.close()
 
-    except Exception as e:
-        logging.error(f"Error: {str(e)}")
-        await update.message.reply_text("⚠️ حدث خطأ أثناء المعالجة!")
-    finally:
-        # التنظيف
-        for key in ["main_pdf", "page_to_add"]:
-            if key in context.user_data and os.path.exists(context.user_data[key]):
-                os.unlink(context.user_data[key])
-        context.user_data.clear()
-        
-        if 'output_file' in locals():
-            os.unlink(output_file.name)
+        return True, output_path
 
-    return ConversationHandler.END
-
-async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    for key in ["main_pdf", "page_to_add"]:
-        if key in context.user_data and os.path.exists(context.user_data[key]):
-            os.unlink(context.user_data[key])
-    context.user_data.clear()
-    
-    await update.message.reply_text("🗑️ تم الإلغاء بنجاح!")
-    return ConversationHandler.END
-
-def setup(application: Application) -> None:
-    """دالة لتسجيل الـ ConversationHandler مع التطبيق."""
-    conv_handler = ConversationHandler(
-        entry_points=[CommandHandler("addpages", addpages)],
-        states={
-            MAIN_PDF: [MessageHandler(filters.Document.PDF, handle_main_pdf)],
-            PAGE_PDF: [
-                CallbackQueryHandler(handle_page_pdf, pattern="^add_page$"),
-                MessageHandler(filters.Document.PDF, process_page_file)
-            ],
-            CHOOSE_OPTION: [CallbackQueryHandler(handle_option, pattern="^(add_all|add_one)$")],
-            POSITION: [MessageHandler(filters.TEXT & ~filters.COMMAND, handle_position)]
-        },
-        fallbacks=[CommandHandler("cancel", cancel)]
-    )
-    
-    application.add_handler(conv_handler)
+    except Exception as Error:
+        logger.exception("⚠ %s: %s" % (file_name, Error), exc_info=True)
+        return False, str(Error)
