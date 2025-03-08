@@ -5,7 +5,7 @@
 file_name = "pdf.py"
 
 from configs.config import bot
-from telebot.async_telebot import AsyncTeleBot
+from telebot import TeleBot
 
 
 
@@ -13,7 +13,7 @@ from telebot.async_telebot import AsyncTeleBot
 PDF = {}  # save images for generating pdf
 works = {"u": [], "g": []}  # broken works
 
-pyTgLovePDF = async_telebot.AsyncTeleBot(bot.API_TOKEN, parse_mode="Markdown")
+pyTgLovePDF = TeleBot(bot.API_TOKEN, parse_mode="Markdown")
 # TELEBOT (pyTelegramBotAPI) Asyncio [for uploading group doc, imgs]
 
 pyTgLovePDF.polling()
